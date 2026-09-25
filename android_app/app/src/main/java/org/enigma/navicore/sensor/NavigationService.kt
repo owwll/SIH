@@ -14,6 +14,8 @@ import kotlinx.coroutines.*
 import org.enigma.navicore.fusion.FusionCore
 import org.enigma.navicore.fusion.FusionMode
 import org.enigma.navicore.fusion.FusionState
+import org.enigma.navicore.odometer.VirtualOdometer
+import org.enigma.navicore.odometer.TfliteVirtualOdometer
 import org.enigma.navicore.odometer.LocalVirtualOdometer
 
 class NavigationService : Service() {
@@ -21,7 +23,7 @@ class NavigationService : Service() {
     private val serviceScope = CoroutineScope(Dispatchers.Default + SupervisorJob())
     private lateinit var sensorManager: ImuSensorManager
     private val fusionCore = FusionCore()
-    private val virtualOdometer = LocalVirtualOdometer()
+    private lateinit var virtualOdometer: VirtualOdometer
     private var wakeLock: PowerManager.WakeLock? = null
 
     companion object {
@@ -35,6 +37,13 @@ class NavigationService : Service() {
         super.onCreate()
         createNotificationChannel()
         startForeground(NOTIFICATION_ID, buildNotification("Initializing NaviCore AI Engine..."))
+
+        // Initialize real TFLite Virtual Odometer with NNAPI/XNNPACK; fallback to LocalVirtualOdometer if needed
+        virtualOdometer = try {
+            TfliteVirtualOdometer(this)
+        } catch (e: Exception) {
+            LocalVirtualOdometer()
+        }
 
         val powerManager = getSystemService(Context.POWER_SERVICE) as PowerManager
         wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "NaviCore:SensorWakeLock").apply {
@@ -108,6 +117,7 @@ class NavigationService : Service() {
     }
 
     override fun onDestroy() {
+        (virtualOdometer as? AutoCloseable)?.close()
         sensorManager.stopListening()
         serviceScope.cancel()
         wakeLock?.let { if (it.isHeld) it.release() }

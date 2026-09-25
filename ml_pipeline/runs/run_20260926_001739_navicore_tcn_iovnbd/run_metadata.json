@@ -1,0 +1,105 @@
+{
+  "timestamp": "20260926_001739",
+  "run_id": "run_20260926_001739_navicore_tcn_iovnbd",
+  "git_commit": "e43e80c01922a4291ed1670cbdce034404ab06ed",
+  "git_branch": "dhruvin",
+  "random_seed": 42,
+  "dataset_version": "iovnbd_v1.0_coventry",
+  "dataset_files": {
+    "smartphone": "data/sample_iovnbd/S-S1.csv",
+    "vehicle_can": "data/sample_iovnbd/V-S1.csv"
+  },
+  "sample_rate_hz": 10,
+  "window_len_samples": 10,
+  "stride_samples": 1,
+  "split_strategy": "temporal_block_split",
+  "train_samples": 952,
+  "test_samples": 239,
+  "total_samples": 1191,
+  "training_config": {
+    "experiment": {
+      "name": "navicore_tcn_iovnbd",
+      "seed": 42,
+      "dataset_version": "iovnbd_v1.0_coventry",
+      "output_dir": "models/checkpoints"
+    },
+    "data": {
+      "raw_data_dir": "../data/raw_iovnbd",
+      "training_rate_hz": 10,
+      "device_sampling_rate_hz": 100,
+      "window_len_samples": 10,
+      "stride_samples": 1,
+      "train_split_ratio": 0.8,
+      "val_split_ratio": 0.1,
+      "test_split_ratio": 0.1
+    },
+    "model": {
+      "in_channels": 6,
+      "stem_filters": 32,
+      "stem_kernel_size": 7,
+      "residual_blocks": [
+        {
+          "dilation": 1,
+          "filters": 32,
+          "kernel_size": 3
+        },
+        {
+          "dilation": 2,
+          "filters": 64,
+          "kernel_size": 3
+        },
+        {
+          "dilation": 4,
+          "filters": 128,
+          "kernel_size": 3
+        }
+      ],
+      "se_reduction": 4,
+      "bottleneck_units": 64,
+      "dropout_prob": 0.2
+    },
+    "training": {
+      "epochs": 60,
+      "batch_size": 64,
+      "learning_rate": 0.001,
+      "weight_decay": 0.0001,
+      "scheduler": "cosine_annealing",
+      "loss_weights": {
+        "speed_nll": 1.0,
+        "zupt_bce": 0.5,
+        "smoothness": 0.1
+      },
+      "early_stopping_patience": 10
+    },
+    "quantization": {
+      "method": "ptq_int8",
+      "calibration_samples": 500,
+      "target_delegate": "nnapi"
+    },
+    "augmentations": {
+      "enabled": true,
+      "pothole_shock": {
+        "enabled": true,
+        "shock_intensity_g": 3.5,
+        "duration_samples": 2,
+        "probability": 0.35
+      },
+      "engine_idle": {
+        "enabled": true,
+        "idle_freq_hz": 22.0,
+        "min_freq_hz": 15.0,
+        "max_freq_hz": 30.0,
+        "amplitude_mps2": 0.8
+      },
+      "gaussian_noise": {
+        "enabled": true,
+        "accel_std": 0.05,
+        "gyro_std": 0.005
+      },
+      "orientation_jitter": {
+        "enabled": true,
+        "max_angle_deg": 15.0
+      }
+    }
+  }
+}

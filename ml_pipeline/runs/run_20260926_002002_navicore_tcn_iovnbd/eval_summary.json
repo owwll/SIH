@@ -1,0 +1,56 @@
+{
+  "run_id": "run_20260926_002002_navicore_tcn_iovnbd",
+  "git_commit": "e43e80c01922a4291ed1670cbdce034404ab06ed",
+  "git_branch": "dhruvin",
+  "seed": 42,
+  "epochs_trained": 60,
+  "training_time_s": 30.630313634872437,
+  "test_samples": 239,
+  "velocity_metrics": {
+    "rmse_mps": 0.07737474888563156,
+    "rmse_kmh": 0.27854909598827365,
+    "mae_mps": 0.06507059931755066,
+    "p95_error_mps": 0.14335831999778748,
+    "mean_predicted_variance_sigma2": 6.072245121002197
+  },
+  "held_out_zupt_metrics": {
+    "confusion_matrix": {
+      "tp": 0,
+      "fp": 0,
+      "tn": 239,
+      "fn": 0
+    },
+    "accuracy_pct": 100.0,
+    "precision_pct": 0.0,
+    "recall_pct": 0.0,
+    "f1_score_pct": 0.0,
+    "false_positive_rate_pct": 0.0
+  },
+  "train_zupt_metrics": {
+    "confusion_matrix": {
+      "tp": 0,
+      "fp": 0,
+      "tn": 651,
+      "fn": 301
+    },
+    "accuracy_pct": 68.38235294117648,
+    "precision_pct": 0.0,
+    "recall_pct": 0.0,
+    "f1_score_pct": 0.0,
+    "false_positive_rate_pct": 0.0
+  },
+  "full_trajectory_zupt_metrics": {
+    "confusion_matrix": {
+      "tp": 0,
+      "fp": 0,
+      "tn": 890,
+      "fn": 301
+    },
+    "accuracy_pct": 74.72712006717045,
+    "precision_pct": 0.0,
+    "recall_pct": 0.0,
+    "f1_score_pct": 0.0,
+    "false_positive_rate_pct": 0.0
+  },
+  "checkpoint_path": "D:\\Dhruvin\\NaviCore-Ai\\models\\checkpoints\\best_tcn.pt"
+}

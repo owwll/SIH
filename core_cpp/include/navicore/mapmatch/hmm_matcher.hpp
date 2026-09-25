@@ -1,6 +1,6 @@
 #pragma once
 
-#include "types.hpp"
+#include "navicore/types.hpp"
 #include <vector>
 #include <string>
 #include <cmath>

@@ -74,19 +74,32 @@ c:\Users\Manthan\Desktop\SIH168/
 │   ├── CMakeLists.txt                 # Standalone CMake build (supports Linux, Windows, Android)
 │   ├── include/navicore/
 │   │   ├── types.hpp                  # State vectors, ImuSample, GnssFix, Matrix definitions
-│   │   ├── eskf.hpp                   # 15-State Error-State Kalman Filter Header
-│   │   ├── auto_calib.hpp             # LPF Gravity + Horizontal PCA Calibration Header
-│   │   ├── nhc_zupt.hpp               # Non-Holonomic Constraints & ZUPT Trigger Header
-│   │   └── hmm_matcher.hpp            # HMM Viterbi Map-Matching Header
+│   │   ├── fusion/
+│   │   │   └── eskf.hpp               # 15-State Error-State Kalman Filter Header
+│   │   ├── calibration/
+│   │   │   └── auto_calib.hpp         # LPF Gravity + Horizontal PCA Calibration Header
+│   │   ├── zupt/
+│   │   │   └── nhc_zupt.hpp           # Non-Holonomic Constraints & ZUPT Trigger Header
+│   │   ├── mapmatch/
+│   │   │   └── hmm_matcher.hpp        # HMM Viterbi Map-Matching Header
+│   │   ├── routing/
+│   │   │   └── rerouting_engine.hpp   # Dynamic rerouting engine header
+│   │   ├── sensors/
+│   │   │   └── barometer_tracker.hpp  # Barometer elevation tracking header
+│   │   └── vehicle/
+│   │       └── vehicle_profile_manager.hpp # Vehicle profiles and kinematic limits
 │   ├── src/
-│   │   ├── eskf.cpp                   # ESKF Predict, Update, Covariance Reset Implementation
-│   │   ├── auto_calib.cpp             # Dynamic Mounting Calibration Implementation
-│   │   ├── nhc_zupt.cpp               # NHC Pseudo-measurements & FFT Spectral ZUPT
-│   │   └── hmm_matcher.cpp            # Road network topological snapping
+│   │   ├── fusion/
+│   │   │   └── eskf.cpp               # ESKF Predict, Update, Covariance Reset Implementation
+│   │   ├── calibration/
+│   │   │   └── auto_calib.cpp         # Dynamic Mounting Calibration Implementation
+│   │   ├── zupt/
+│   │   │   └── nhc_zupt.cpp           # NHC Pseudo-measurements & FFT Spectral ZUPT
+│   │   └── mapmatch/
+│   │       └── hmm_matcher.cpp        # Road network topological snapping
 │   ├── tests/                         # GoogleTest Native C++ Test Suite
-│   │   ├── test_eskf.cpp              # Test 15-state convergence on simulated trajectories
-│   │   ├── test_auto_calib.cpp        # Test PCA rotation matrix estimation under noise
-│   │   └── test_zupt.cpp              # Test ZUPT velocity clamp & covariance reset
+│   │   └── fusion/
+│   │       └── test_eskf.cpp          # Test 15-state convergence on simulated trajectories
 │   └── third_party/                   # Vendored Header-Only Dependencies
 │       ├── eigen3/                    # Eigen 3.4.0 Linear Algebra (MPL2)
 │       └── nanoflann/                 # Fast KD-Tree / R-Tree for spatial search (BSD)
@@ -171,16 +184,16 @@ c:\Users\Manthan\Desktop\SIH168/
 [android_app/src/main/cpp/jni_bridge.cpp]
          │  (Direct float* pass-through)
          ▼
-[core_cpp/src/auto_calib.cpp] ────────► Computes Dynamic R_b^v (LPF + PCA)
+[core_cpp/src/calibration/auto_calib.cpp] ────────► Computes Dynamic R_b^v (LPF + PCA)
          │  (Calibrated Vehicle-Frame IMU Tensor)
          ▼
 [android_app/.../odometer/VirtualOdometer.kt] (TFLite INT8 on NNAPI)
          │  (Outputs: Vx, σ_v^2, P(stopped))
          ▼
-[core_cpp/src/eskf.cpp] ──────────────► Fuses (Vx + NHC + ZUPT + GNSS Biases)
+[core_cpp/src/fusion/eskf.cpp] ──────────────► Fuses (Vx + NHC + ZUPT + GNSS Biases)
          │  (Outputs: FusionState: Lat, Lon, Speed, Heading, Covariance)
          ▼
-[core_cpp/src/hmm_matcher.cpp] ────────► Snaps position to OSM road centerline
+[core_cpp/src/mapmatch/hmm_matcher.cpp] ────────► Snaps position to OSM road centerline
          │  (Snapped Coordinate)
          ▼
 [android_app/.../ui/MapScreen.kt] ─────► 10 Hz Smooth Map Marker on MapLibre Canvas
