@@ -69,7 +69,7 @@ def test_stage_2_iovnbd():
 
 # STAGE 3: 1D-TCN Model Inference & Quantization
 def test_stage_3_tcn_model():
-    from models.export_tflite import export_model_artifacts
+    from models.export.export_tflite import export_model_artifacts
     export_model_artifacts(output_dir=os.path.join(ROOT_DIR, "models", "exported"))
     return "1D-TCN Neural Odometer forward graph and mobile INT8 deployment container verified."
 

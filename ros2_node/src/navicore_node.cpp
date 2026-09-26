@@ -7,8 +7,8 @@
 #include <std_msgs/msg/string.hpp>
 
 #include "navicore/types.hpp"
-#include "navicore/eskf.hpp"
-#include "navicore/auto_calib.hpp"
+#include "navicore/fusion/eskf.hpp"
+#include "navicore/calibration/auto_calib.hpp"
 
 class NaviCoreRosNode : public rclcpp::Node {
 public:

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "types.hpp"
+#include "navicore/types.hpp"
 #include <vector>
 #include <cmath>
 
@@ -42,7 +42,7 @@ private:
 
     // Rolling window of horizontal dynamic accelerations for PCA
     std::vector<std::pair<float, float>> horiz_accel_window_;
-    size_t required_pca_samples_{150}; // 1.5 seconds @ 100 Hz
+    size_t required_pca_samples_{64}; // 64 samples (0.64s @ 100 Hz)
 
     RotationMatrix3x3 r_b_v_{};
     bool is_calibrated_{false};

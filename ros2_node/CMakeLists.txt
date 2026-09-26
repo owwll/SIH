@@ -19,8 +19,8 @@ include_directories(
 
 add_executable(navicore_node
   src/navicore_node.cpp
-  ../core_cpp/src/eskf.cpp
-  ../core_cpp/src/auto_calib.cpp
+  ../core_cpp/src/fusion/eskf.cpp
+  ../core_cpp/src/calibration/auto_calib.cpp
 )
 
 ament_target_dependencies(navicore_node

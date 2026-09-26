@@ -16,7 +16,10 @@ ENV/
 *.pt
 *.pth
 *.onnx
+*.onnx.data
 *.tflite
+!models/exported/navicore_odometer_int8.tflite
+!android_app/app/src/main/assets/navicore_odometer_int8.tflite
 models/checkpoints/
 data/raw_iovnbd/
 data/IO-VNBD/

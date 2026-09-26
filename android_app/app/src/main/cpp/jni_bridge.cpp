@@ -1,7 +1,7 @@
 #include <jni.h>
 #include <memory>
-#include "navicore/eskf.hpp"
-#include "navicore/auto_calib.hpp"
+#include "navicore/fusion/eskf.hpp"
+#include "navicore/calibration/auto_calib.hpp"
 
 static std::unique_ptr<navicore::EskfFilter> g_eskf = nullptr;
 static std::unique_ptr<navicore::MountCalibrator> g_calibrator = nullptr;

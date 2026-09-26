@@ -42,7 +42,7 @@ android {
 
         externalNativeBuild {
             cmake {
-                cppFlags += "-std=c++17 -O3"
+                cppFlags += "-std=c++20 -O3"
             }
         }
         ndk {
@@ -111,6 +111,10 @@ dependencies {
 
     // Coroutines & Lifecycle
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
+
+    // TensorFlow Lite Mobile Inference & Support Library (DV-08)
+    implementation("org.tensorflow:tensorflow-lite:2.14.0")
+    implementation("org.tensorflow:tensorflow-lite-support:0.4.4")
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")

@@ -36,6 +36,7 @@ training:
   loss_weights:
     speed_nll: 1.0
     zupt_bce: 0.5
+    zupt_pos_weight: 3.0
     smoothness: 0.1
   early_stopping_patience: 10
 
@@ -43,3 +44,25 @@ quantization:
   method: "ptq_int8"           # Post-Training Quantization INT8
   calibration_samples: 500
   target_delegate: "nnapi"     # Android NNAPI / Hexagon NPU
+
+augmentations:
+  enabled: true
+  pothole_shock:
+    enabled: true
+    shock_intensity_g: 3.5      # Peak shock acceleration magnitude in Gs (vertical spike)
+    duration_samples: 2         # Duration of shock impulse in samples (at training rate)
+    probability: 0.35           # Probability of injection when moving
+  engine_idle:
+    enabled: true
+    idle_freq_hz: 22.0          # Nominal engine idle frequency (Hz)
+    min_freq_hz: 15.0           # Lower bound of engine idle vibration band (Hz)
+    max_freq_hz: 30.0           # Upper bound of engine idle vibration band (Hz)
+    amplitude_mps2: 0.8         # Peak body vibration amplitude in m/s^2
+  gaussian_noise:
+    enabled: true
+    accel_std: 0.05             # Accelerometer white noise standard deviation (m/s^2)
+    gyro_std: 0.005             # Gyroscope white noise standard deviation (rad/s)
+  orientation_jitter:
+    enabled: true
+    max_angle_deg: 15.0         # Maximum 3D mount perturbation angle (degrees)
+

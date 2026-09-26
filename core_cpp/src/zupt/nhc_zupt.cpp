@@ -1,4 +1,4 @@
-#include "navicore/nhc_zupt.hpp"
+#include "navicore/zupt/nhc_zupt.hpp"
 #include <numeric>
 #include <algorithm>
 
@@ -22,8 +22,8 @@ bool SpectralZuptEngine::ProcessSample(float dynamic_accel_mag) {
     // 1. Calculate energy in translation band (0.1 Hz - 5 Hz)
     float e_trans = ComputeBandEnergy(0.1f, 5.0f);
 
-    // 2. Calculate energy in engine idle harmonic band (20 Hz - 35 Hz)
-    float e_idle = ComputeBandEnergy(20.0f, 35.0f);
+    // 2. Calculate energy in engine idle harmonic band (configurable per vehicle profile)
+    float e_idle = ComputeBandEnergy(idle_band_low_hz_, idle_band_high_hz_);
 
     if (e_trans < 1e-5f) e_trans = 1e-5f;
     last_energy_ratio_ = e_idle / e_trans;

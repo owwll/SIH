@@ -9,11 +9,12 @@ import kotlinx.coroutines.launch
 import org.enigma.navicore.fusion.FusionCore
 import org.enigma.navicore.fusion.FusionMode
 import org.enigma.navicore.fusion.FusionState
+import org.enigma.navicore.odometer.VirtualOdometer
 import org.enigma.navicore.odometer.LocalVirtualOdometer
 
 class NavigationViewModel(
     private val fusionCore: FusionCore = FusionCore(),
-    private val virtualOdometer: LocalVirtualOdometer = LocalVirtualOdometer()
+    private val virtualOdometer: VirtualOdometer = LocalVirtualOdometer()
 ) : ViewModel() {
 
     private val _fusionState = MutableStateFlow(

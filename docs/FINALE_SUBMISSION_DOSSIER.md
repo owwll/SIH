@@ -75,7 +75,7 @@ Tested on physical budget Android testbeds (Redmi 9A, 2GB RAM / MediaTek Helio G
 ## 4. Architectural Verification Artifacts
 
 1. **AI Model Pipeline**: [`ml_pipeline/src/models/model.py`](file:///c:/Users/Manthan/Desktop/SIH168/ml_pipeline/src/models/model.py) (1D-TCN + SE-Block + Uncertainty Head).
-2. **C++ Native Core**: [`core_cpp/src/eskf.cpp`](file:///c:/Users/Manthan/Desktop/SIH168/core_cpp/src/eskf.cpp), [`auto_calib.cpp`](file:///c:/Users/Manthan/Desktop/SIH168/core_cpp/src/auto_calib.cpp), [`nhc_zupt.cpp`](file:///c:/Users/Manthan/Desktop/SIH168/core_cpp/src/nhc_zupt.cpp).
+2. **C++ Native Core**: [`core_cpp/src/fusion/eskf.cpp`](file:///c:/Users/Manthan/Desktop/SIH168/core_cpp/src/fusion/eskf.cpp), [`auto_calib.cpp`](file:///c:/Users/Manthan/Desktop/SIH168/core_cpp/src/calibration/auto_calib.cpp), [`nhc_zupt.cpp`](file:///c:/Users/Manthan/Desktop/SIH168/core_cpp/src/zupt/nhc_zupt.cpp).
 3. **Android Client UI**: [`android_app/app/src/main/java/org/enigma/navicore/ui/MapScreen.kt`](file:///c:/Users/Manthan/Desktop/SIH168/android_app/app/src/main/java/org/enigma/navicore/ui/MapScreen.kt).
 4. **Live Verification Script**: [`scripts/verify_application.py`](file:///c:/Users/Manthan/Desktop/SIH168/scripts/verify_application.py).
 5. **Interactive Telemetry Dashboard**: [`web_visualizer/index.html`](file:///c:/Users/Manthan/Desktop/SIH168/web_visualizer/index.html).

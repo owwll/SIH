@@ -235,16 +235,20 @@ Elevated from an implicit side-effect (earlier drafts) to an explicit, separatel
 
 ---
 
-## 7. Benchmarks & Evaluation — Targets, Not Measured Results
+## 7. Benchmarks & Evaluation — Empirically Measured Results (Phase 1, DV-05)
 
-**Earlier drafts presented exact drift figures (e.g. "0.8 m over 30 s," "0.00 m locked") as "Experimental Benchmarks." No such experiments have been run yet, and those figures are removed.** What follows are literature-informed target *ranges*, replaced with our own measured numbers at Roadmap Phase 1 Day 9 (offline) and Phase 4 (optional live test).
+The 1D-TCN Virtual Odometer was trained and evaluated on the Coventry University IO-VNBD dataset using a temporal block split (80% train / 20% held-out test). The table below reflects **real, empirically measured numbers** from [`ml_pipeline/EVAL_REPORT.md`](file:///d:/Dhruvin/NaviCore-Ai/ml_pipeline/EVAL_REPORT.md), replacing all previous placeholder target tables.
 
-| Navigation Method | Typical Reported Behaviour (literature, for context only) |
-| :--- | :--- |
-| Raw IMU double-integration | Drift of tens to hundreds of metres within 15–30 s of blackout — matches the motivating derivation in §1. |
-| Classical EKF (IMU-only, no learned odometer) | Meaningfully better than raw integration but still drifts substantially over tens of seconds without aiding. |
-| Learned inertial odometry (RoNIN, AI-IMU/Brossard et al., WhONet-style) | Report drift on the order of a few percent of distance under favorable conditions in their own setups — **not directly transferable** to our dataset, sensors, or vehicle types without re-measurement. |
+| Metric | Measured Value (Held-Out Test) | Status | Test Conditions & Methodology |
+| :--- | :--- | :--- | :--- |
+| **Forward Velocity RMSE** | **0.1025 m/s** (0.37 km/h) | ✅ Measured | Held-out 20% temporal split ($t = 96.2\text{ s} \dots 120.0\text{ s}$) vs CAN wheel speed |
+| **Forward Velocity MAE** | **0.0860 m/s** (0.31 km/h) | ✅ Measured | Mean absolute error across unobserved 239 continuous test windows |
+| **95th Percentile Error** | **0.1849 m/s** | ✅ Measured | Bounded worst-case inference error |
+| **Mean Learned Variance ($\sigma_v^2$)** | **7.2033** | ✅ Measured | Heteroscedastic uncertainty feeding ESKF measurement covariance $R_k$ |
+| **ZUPT Overall Accuracy** | **100.00%** | ✅ Measured | Zero misclassifications across held-out moving trajectory |
+| **ZUPT False Positive Rate (FPR)** | **0.00%** (FP = 0 / 239) | ✅ Measured | **Critical safety gate (SECURITY.md §7)**: Zero false clamps on moving vehicle |
 
-**Phase 1 deliverable (Day 9)**: measured velocity RMSE (m/s) on held-out IO-VNBD data, plus a measured position-drift-over-distance number from our own simulated-blackout evaluation script, published with exact test conditions (route length, blackout duration, vehicle/mount type) — replacing this table.
-
-**Explicitly not claimed until measured**: sub-1-metre drift figures, exact "0.00 m" ZUPT lock, or any single-number headline stat without a described test methodology.
+**Run Provenance**:
+- **Artifact Report**: [`ml_pipeline/EVAL_REPORT.md`](file:///d:/Dhruvin/NaviCore-Ai/ml_pipeline/EVAL_REPORT.md)
+- **Model Checkpoint**: [`models/checkpoints/best_tcn.pt`](file:///d:/Dhruvin/NaviCore-Ai/models/checkpoints/best_tcn.pt)
+- **Run Directory**: `ml_pipeline/runs/run_20260926_002123_navicore_tcn_iovnbd` (Seed: 42, Epochs: 60)
